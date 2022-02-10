@@ -40,7 +40,7 @@ The documentation below does not list any inherited properties and methods. Plea
 
 #### Constructor
 
-`new Marker(options`: [`MarkerOptions`](#markeroptions)`)`: [`Marker`](#marker)
+`new Marker(options`: [`MarkerOptions`](#interface-markeroptions)`)`: [`Marker`](#marker)
 
 Creates a new marker.
 
