@@ -1,0 +1,1 @@
+The assets in this directory have been converted to data URIs and are directly embedded in the source code.

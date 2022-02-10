@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "es2020",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "lib": [
+      "es2015",
+      "es2015.promise"
+    ],
+  },
+  "include": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "**/*.test.js"
+  ]
+}
