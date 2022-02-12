@@ -1,6 +1,6 @@
 {
   "name": "ol-marker-feature",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Vector feature based markers for OpenLayers",
   "main": "dist/index.js",
   "exports": {
