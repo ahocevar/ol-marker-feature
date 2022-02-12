@@ -22,7 +22,7 @@ const popup = new Popup({offset: [0, -32]});
 map.addOverlay(popup);
 
 marker.on('click', function() {
-  popup.show(marker.getPosition(), marker.get('info'));
+  popup.show(marker.getLocation(), marker.get('info'));
 });
 ```
 
