@@ -46,14 +46,8 @@ class Marker extends Feature {
   /**
    * `import Marker from 'ol-marker-feature';`
    *
-   * This plugin provides an easy way to add markers to an OpenLayers map and associate them with
-   * popups, e.g. using [ol-popup](https://npmjs.com/package/ol-popup).
-   *
-   * A `Marker` is basically an
-   * [`ol/Feature`](https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html). When it
-   * is added to a map, the plugin will create an unmanaged layer for the map's marker features. It
-   * will also set up `pointermove` and `click` listeners to change the cursor when the user hovers
-   * over a marker, and to dispatch a `click` event on the `Marker` when it is clicked.
+   * Extends
+   *  * [ol/Feature](https://openlayers.org/en/latest/apidoc/module-ol_Feature-Feature.html)
    *
    * Fires
    *  * `click` when the marker is clicked.
@@ -97,7 +91,7 @@ class Marker extends Feature {
    * @returns {ol_coordinate_Coordinate} Location of the marker in view coordinates.
    */
   getLocation() {
-    /** @type {import("ol/geom/Geometry").default} */
+    /** @private @type {import("ol/geom/Geometry").default} */
     const geometry = this.getGeometry();
     switch (geometry.getType()) {
       case 'Point':

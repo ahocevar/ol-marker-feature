@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.1
+
+* Minor documentation improvements
+
 ## v2.0.0
 
 This release is less opinionated, and makes the `ol/Feature` wrapper even thinner.
