@@ -3,17 +3,18 @@ import should from 'should/as-function.js';
 import Map from 'ol/Map.js';
 import Feature from 'ol/Feature.js';
 import { Style } from 'ol/style.js';
-import CircleStyle from 'ol/style/Circle.js';
 import { getUid } from 'ol/util.js';
+import Point from 'ol/geom/Point.js';
+import Circle from 'ol/geom/Circle.js';
+import LineString from 'ol/geom/LineString.js';
+import Polygon from 'ol/geom/Polygon.js';
 import Marker, { _layersByMapUid } from './index.js';
 import defaultStyle from './style.js';
 
 describe('ol-marker-feature', () => {
   describe('Constructor', () => {
-    it('creates an instance', (done) => {
-      const marker = new Marker({
-        position: [16, 48],
-      });
+    it('with a location', (done) => {
+      const marker = new Marker([16, 48]);
       should(marker).be.an.instanceOf(Marker);
       should(marker).be.an.instanceOf(Feature);
       should(marker.getGeometry().getCoordinates()).deepEqual([16, 48]);
@@ -24,31 +25,53 @@ describe('ol-marker-feature', () => {
       });
     });
 
-    it('accepts options', () => {
-      const style = new Style({
-        image: new CircleStyle({
-          radius: 5,
-        }),
+    it('with a geometry', (done) => {
+      const marker = new Marker(new Point([16, 48]));
+      should(marker).be.an.instanceOf(Marker);
+      should(marker).be.an.instanceOf(Feature);
+      should(marker.getGeometry().getCoordinates()).deepEqual([16, 48]);
+      marker.on('change', () => {
+        done(new Error('Expected marker not to change'));
       });
+      setTimeout(() => {
+        should(marker.getStyle() instanceof Style).be.false();
+        done();
+      }, 100);
+    });
+
+    it('with an object', (done) => {
       const marker = new Marker({
-        position: [16, 48],
+        geometry: new Point([16, 48]),
         markup: 'Hello world!',
-        style,
       });
-      should(marker.getStyle()).equal(style);
-      should(marker.getMarkup()).equal('Hello world!');
+      should(marker.getGeometry().getCoordinates()).deepEqual([16, 48]);
+      should(marker.get('markup')).equal('Hello world!');
+      marker.on('change', () => {
+        done(new Error('Expected marker not to change'));
+      });
+      setTimeout(() => {
+        should(marker.getStyle() instanceof Style).be.false();
+        done();
+      }, 100);
+    });
+
+    it('throws an error when no geometry is provided', () => {
+      try {
+        // eslint-disable-next-line no-new
+        new Marker({ info: 'foo' });
+      } catch (e) {
+        should(e.message).equal('Marker must have a geometry');
+      }
     });
   });
 
-  describe('#setMap', () => {
-    let map; let
-      marker;
+  describe('#setMap()', () => {
+    let map;
+    let marker;
     beforeEach(() => {
       map = new Map();
-      marker = new Marker({
-        position: [16, 48],
-        map,
-      });
+      marker = new Marker([16, 48]);
+      marker.setMap(map);
     });
 
     it('is called when constructur is configured with `map`', () => {
@@ -76,69 +99,38 @@ describe('ol-marker-feature', () => {
     });
   });
 
-  describe('#setStyle', () => {
-    let map; let marker; let
-      style;
+  describe('#setStyle()', () => {
+    let marker;
     beforeEach(() => {
-      map = new Map();
-      marker = new Marker({
-        position: [16, 48],
-        map,
-      });
-      style = new Style({
-        image: new CircleStyle({
-          radius: 5,
-        }),
-      });
+      marker = new Marker([16, 48]);
     });
 
     it('sets the style', () => {
-      marker.setStyle(style);
-      should(marker.getStyle()).equal(style);
+      marker.setStyle(defaultStyle);
+      should(marker.getStyle() instanceof Style).be.true();
+      should(marker.getStyle()).equal(defaultStyle);
     });
   });
 
-  describe('#setMarkup', () => {
-    let map; let
-      marker;
-    beforeEach(() => {
-      map = new Map();
-      marker = new Marker({
-        position: [16, 48],
-        map,
-      });
+  describe('#getLocation()', () => {
+    it('returns the location for a point', () => {
+      const marker = new Marker([16, 48]);
+      should(marker.getLocation()).deepEqual([16, 48]);
     });
 
-    it('sets the markup', () => {
-      marker.setMarkup('Hello world!');
-      should(marker.getMarkup()).equal('Hello world!');
+    it('returns the location for a circle', () => {
+      const marker = new Marker(new Circle([16, 48], 1));
+      should(marker.getLocation()).deepEqual([16, 48]);
     });
 
-    it('updates the markup on the underlying feature', () => {
-      marker.setMarkup('Hello world!');
-      should(marker.get('markup')).equal('Hello world!');
-    });
-  });
-
-  describe('#setPosition', () => {
-    let map; let
-      marker;
-    beforeEach(() => {
-      map = new Map();
-      marker = new Marker({
-        position: [16, 48],
-        map,
-      });
+    it('returns the location for a linestring', () => {
+      const marker = new Marker(new LineString([[16, 48], [17, 48]]));
+      should(marker.getLocation()).deepEqual([16.5, 48]);
     });
 
-    it('sets the position', () => {
-      marker.setPosition([16, 48]);
-      should(marker.getPosition()).deepEqual([16, 48]);
-    });
-
-    it('updates the position on the underlying geometry', () => {
-      marker.setPosition([16, 48]);
-      should(marker.getGeometry().getCoordinates()).deepEqual([16, 48]);
+    it('returns the location for a polygon', () => {
+      const marker = new Marker(new Polygon([[[15, 47], [15, 49], [17, 49], [17, 47], [15, 47]]]));
+      should(marker.getLocation()).deepEqual([16, 48]);
     });
   });
 });
