@@ -20,7 +20,8 @@
     "pretest": "npm run lint",
     "test": "mocha-vite-puppeteer && rimraf node_modules/.vite",
     "lint": "eslint --ext .js,.cjs .",
-    "doc": "documentation readme src/index.js -s \"API\""
+    "doc": "documentation readme src/index.js -s \"API\"",
+    "prepare": "npm run build && npm run doc"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,6 @@
     "rimraf": "^3.0.2",
     "should": "^13.2.3",
     "typescript": "^4.5.5",
-    "vite": "^2.8.1"
+    "vite": "^2.8.0"
   }
 }
