@@ -13,6 +13,8 @@ module.exports = {
   rules: {
     'import/extensions': ['error', { js: 'always' }],
     'no-underscore-dangle': 'off',
+    'no-param-reassign': 'off',
+    'prefer-object-spread': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 };

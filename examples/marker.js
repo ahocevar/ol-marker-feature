@@ -16,16 +16,14 @@ const map = new Map({
   view: new View({ center: [16.351, 48.277], zoom: 15 }),
 });
 
+const marker = new Marker([16.351, 48.277]);
+marker.setMap(map);
+marker.set('info', 'A pretty CSS3 popup.<br> Easily customizable.');
+
 const popup = new Popup({ offset: [0, -32] });
 map.addOverlay(popup);
 
-const marker = new Marker({
-  position: [16.351, 48.277],
-  markup: 'A pretty CSS3 popup.<br> Easily customizable.',
-  map,
-});
-
 marker.on('click', () => {
-  popup.show(marker.getPosition(), marker.getMarkup());
+  popup.show(marker.getLocation(), marker.get('info'));
 });
 marker.dispatchEvent('click');
