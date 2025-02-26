@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.3
+
+* Make `ol` a peer dependency
+
 ## v2.0.2
 
 * Fixes in Usage example
